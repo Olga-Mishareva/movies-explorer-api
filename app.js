@@ -7,6 +7,10 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 // const cors = require('cors');
 
+const usersRoute = require('./routes/users');
+const moviesRoute = require('./routes/movies');
+// const auth = require('./middlewares/auth');
+
 mongoose.connect('mongodb://localhost:27017/filmdb');
 
 const { PORT = 3000 } = process.env;
@@ -28,6 +32,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.post('/signin', loginValidation, login);
 // app.post('/signup', registerValidation, createUser);
+
+app.use('/users', usersRoute);
+app.use('/movies', moviesRoute);
 
 // app.use('/users', auth, usersRoute);
 // app.use('/cards', auth, cardsRoute);
