@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 
 const usersRoute = require('./routes/users');
 const moviesRoute = require('./routes/movies');
-// const auth = require('./middlewares/auth');
+const { auth } = require('./middlewares/auth');
 
 const { createUser, login } = require('./controllers/users');
 const { limiter } = require('./utils/limiter');
@@ -40,8 +40,8 @@ app.post('/signup', createUser);
 // app.post('/signin', loginValidation, login);
 // app.post('/signup', registerValidation, createUser);
 
-app.use('/users', usersRoute);
-app.use('/movies', moviesRoute);
+app.use('/users', auth, usersRoute);
+app.use('/movies', auth, moviesRoute);
 // app.use('/users', auth, usersRoute);
 // app.use('/cards', auth, cardsRoute);
 
