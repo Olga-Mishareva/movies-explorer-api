@@ -7,14 +7,15 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
+const { NODE_ENV, MONGO_URL } = process.env;
 const router = require('./routes/index');
 const { limiter } = require('./utils/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorsHandler, joiErrors } = require('./utils/errorsHandlers');
 const { allowedCors } = require('./utils/constants');
-const { MONGO_URL } = require('./utils/config');
+const { DEV_MONGO_URL } = require('./utils/config');
 
-mongoose.connect(MONGO_URL);
+mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : DEV_MONGO_URL);
 
 const { PORT = 3000 } = process.env;
 const app = express();
