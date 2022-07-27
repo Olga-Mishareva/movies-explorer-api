@@ -15,7 +15,7 @@ module.exports.createUser = (req, res, next) => {
   User.findOne({ email })
     .then((userWithSameEmail) => {
       if (userWithSameEmail) throw new ConflictError('Такой email уже существует.');
-      return bcrypt.hash(password, SALT_ROUND);
+      return bcrypt.hash(password, NODE_ENV === 'production' ? SALT_ROUND : 8);
     })
     .then((hash) => User.create({ name, email, password: hash }))
     .then((user) => {
