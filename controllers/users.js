@@ -51,6 +51,17 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.logout = (req, res, next) => {
+  const { email } = req.body;
+
+  User.findOne({ email })
+    .then(() => {
+      res.clearCookie('jwt', { httpOnly: true, sameSite: true })
+        .end();
+    })
+    .catch(next);
+};
+
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => new NotFoundError('Пользователь с указанным _id не найден.'))
