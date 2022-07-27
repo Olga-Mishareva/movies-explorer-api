@@ -11,6 +11,8 @@ The logged-in user can also change his or her name and email.
 * MongoDB
 * REST
 
+------------
+
 To run the server on localhost:3000
 
     npm run start 
@@ -19,7 +21,8 @@ To run the server on localhost:3000 with hotreload
 
     npm run dev 
 
+------------
 
-Public IP:
+Public IP: 51.250.84.124
 
-[Show API]()
+[Show API](https://api.movies.om.nomoredomains.xyz)
