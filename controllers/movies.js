@@ -1,15 +1,13 @@
 const Movie = require('../models/movie');
 
-const UnauthorizedError = require('../errors/UnauthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
-const ConflictError = require('../errors/ConflictError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 
 module.exports.addMovie = (req, res, next) => {
   const {
     country, director, duration, year, description,
-    image, trailer, nameRU, nameEN, thumbnail, movieId,
+    image, trailerLink, nameRU, nameEN, thumbnail, movieId,
   } = req.body;
 
   Movie.create({
@@ -19,7 +17,7 @@ module.exports.addMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -44,13 +42,13 @@ module.exports.getMovies = (req, res, next) => { // найти фильмы им
 };
 
 module.exports.removeMovie = (req, res, next) => {
-  Movie.findById(req.param.id)
+  Movie.findById(req.params._id)
     .orFail(() => new NotFoundError('Фильм с указанным _id не найден.'))
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
         throw (new ForbiddenError('Нет прав для удаления этого фильма.'));
       }
-      Movie.findByIdAndRemove(req.param.id)
+      Movie.findByIdAndRemove(req.params._id)
         .then((removedMovie) => res.send(removedMovie))
         .catch(next);
     })

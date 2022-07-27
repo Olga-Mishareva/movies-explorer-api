@@ -25,9 +25,9 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    validate: {
-      validator: (value) => linkRegex.test(value),
-    },
+    // validate: {
+    //   validator: (value) => linkRegex.test(value),
+    // },
   },
   trailerLink: {
     type: String,
@@ -39,9 +39,9 @@ const movieSchema = new mongoose.Schema({
   thumbnail: {
     type: String,
     required: true,
-    validate: {
-      validator: (value) => linkRegex.test(value),
-    },
+    // validate: {
+    //   validator: (value) => linkRegex.test(value),
+    // },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
