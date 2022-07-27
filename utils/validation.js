@@ -1,4 +1,4 @@
-const { celebrate, Joi, errors } = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
 const { emailRegex, linkRegex } = require('./constants');
 
 module.exports.registerValidation = celebrate({
@@ -45,5 +45,3 @@ module.exports.movieParamsValidation = celebrate({
     _id: Joi.string().required().length(24).hex(),
   }),
 });
-
-module.exports.joiErrors = errors({ message: 'Переданы некорректные данные.' });
