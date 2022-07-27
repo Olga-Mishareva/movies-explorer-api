@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { linkRegex } = require('../utils/constants');
+const { linkRegex, relativeLinkRegex } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -25,9 +25,9 @@ const movieSchema = new mongoose.Schema({
   image: { // relative link validation?
     type: String,
     required: true,
-    // validate: {
-    //   validator: (value) => linkRegex.test(value),
-    // },
+    validate: {
+      validator: (value) => relativeLinkRegex.test(value),
+    },
   },
   trailerLink: {
     type: String,
@@ -39,9 +39,9 @@ const movieSchema = new mongoose.Schema({
   thumbnail: {
     type: String,
     required: true,
-    // validate: {
-    //   validator: (value) => linkRegex.test(value),
-    // },
+    validate: {
+      validator: (value) => relativeLinkRegex.test(value),
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
