@@ -2,7 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { CREATED } = require('../utils/constants');
+const { DEV_KEY } = require('../utils/config');
 
+const { NODE_ENV, JWT_SECRET, SALT_ROUND } = process.env;
 const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
 const NotFoundError = require('../errors/NotFoundError');
@@ -13,7 +15,7 @@ module.exports.createUser = (req, res, next) => {
   User.findOne({ email })
     .then((userWithSameEmail) => {
       if (userWithSameEmail) throw new ConflictError('Такой email уже существует.');
-      return bcrypt.hash(password, 10); // убрать число в .env
+      return bcrypt.hash(password, SALT_ROUND);
     })
     .then((hash) => User.create({ name, email, password: hash }))
     .then((user) => {
@@ -35,7 +37,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'ca18bc04497261456f689f0693cbc10609a66e49e88ebe23f9e2b48483616894',
+        NODE_ENV === 'production' ? JWT_SECRET : DEV_KEY,
       );
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,

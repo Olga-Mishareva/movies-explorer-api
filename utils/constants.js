@@ -7,4 +7,5 @@ module.exports.CREATED = 201;
 module.exports.allowedCors = [
   'http://localhost:3000',
   'http://localhost:3001',
+  'https://movies.om.nomoredomains.xyz',
 ];
