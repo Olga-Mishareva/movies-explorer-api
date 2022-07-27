@@ -22,7 +22,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image: {
+  image: { // relative link validation?
     type: String,
     required: true,
     // validate: {

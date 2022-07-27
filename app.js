@@ -11,10 +11,11 @@ const usersRoute = require('./routes/users');
 const moviesRoute = require('./routes/movies');
 const { auth } = require('./middlewares/auth');
 
-const { createUser, login } = require('./controllers/users');
+const { createUser, login, logout } = require('./controllers/users');
 const { limiter } = require('./utils/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorsHandler, notFound } = require('./utils/errorsHandler');
+const { registerValidation, loginValidation, joiErrors } = require('./utils/validation');
 
 mongoose.connect('mongodb://localhost:27017/moviesdb');
 
@@ -35,23 +36,19 @@ app.use(requestLogger);
 
 app.use(limiter);
 
-app.post('/signin', login);
-app.post('/signup', createUser);
-// app.post('/signin', loginValidation, login);
-// app.post('/signup', registerValidation, createUser);
+app.post('/signup', registerValidation, createUser);
+app.post('/signin', loginValidation, login);
 
 app.use('/users', auth, usersRoute);
 app.use('/movies', auth, moviesRoute);
-// app.use('/users', auth, usersRoute);
-// app.use('/cards', auth, cardsRoute);
 
-// app.post('/signout', auth, logout);
+app.post('/signout', auth, logout);
 
 app.use(notFound);
 
 app.use(errorLogger);
 
-// app.use(joiErrors);
+app.use(joiErrors);
 
 app.use(errorsHandler);
 

@@ -6,7 +6,7 @@ const { emailRegex } = require('../utils/constants');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: 'Мария',
+    required: true,
     minlength: 2,
     maxlength: 30,
   },
