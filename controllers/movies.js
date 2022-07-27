@@ -34,7 +34,7 @@ module.exports.addMovie = (req, res, next) => {
     });
 };
 
-module.exports.getMovies = (req, res, next) => { // найти фильмы именно c owner
+module.exports.getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
     .orFail(() => new NotFoundError('Фильмы указанного пользователя не найдены.'))
     .then((movies) => res.send(movies))

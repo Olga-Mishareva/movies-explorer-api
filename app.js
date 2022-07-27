@@ -12,8 +12,9 @@ const { limiter } = require('./utils/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorsHandler, joiErrors } = require('./utils/errorsHandlers');
 const { allowedCors } = require('./utils/constants');
+const { MONGO_URL } = require('./utils/config');
 
-mongoose.connect('mongodb://localhost:27017/moviesdb'); // вынести
+mongoose.connect(MONGO_URL);
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -31,6 +32,7 @@ app.use(cors({
 }));
 
 app.use(limiter);
+
 app.use(router);
 
 app.use(errorLogger);
