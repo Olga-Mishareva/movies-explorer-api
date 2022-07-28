@@ -1,4 +1,4 @@
-# API for moveis explorer
+# API for Moveis Explorer
 
 This API allows you to register and authorize users in the movie search application. 
 The user can save the desired films in their profile or delete them from the profile. 
