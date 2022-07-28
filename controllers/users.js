@@ -14,7 +14,7 @@ module.exports.createUser = (req, res, next) => {
 
   User.findOne({ email })
     .then((userWithSameEmail) => {
-      if (userWithSameEmail) throw new ConflictError('Такой email уже существует.');
+      if (userWithSameEmail) throw new ConflictError();
       return bcrypt.hash(password, NODE_ENV === 'production' ? SALT_ROUND : 8);
     })
     .then((hash) => User.create({ name, email, password: hash }))
@@ -23,7 +23,7 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
+        next(new BadRequestError());
         return;
       }
       next(err);
@@ -66,7 +66,7 @@ module.exports.logout = (req, res, next) => {
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(() => new NotFoundError('Пользователь с указанным _id не найден.'))
+    .orFail(() => new NotFoundError())
     .then((user) => res.send(user))
     .catch(next);
 };
@@ -75,11 +75,11 @@ module.exports.updateUser = (req, res, next) => {
   const { name, email } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
-    .orFail(() => new NotFoundError('Пользователь с указанным _id не найден.'))
+    .orFail(() => new NotFoundError())
     .then((newUser) => res.send(newUser))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
+        next(new BadRequestError());
         return;
       }
       next(err);

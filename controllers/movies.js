@@ -27,7 +27,7 @@ module.exports.addMovie = (req, res, next) => {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при добавлении фильма.'));
+        next(new BadRequestError());
         return;
       }
       next(err);
@@ -36,17 +36,17 @@ module.exports.addMovie = (req, res, next) => {
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
-    .orFail(() => new NotFoundError('Фильмы указанного пользователя не найдены.'))
+    .orFail(() => new NotFoundError())
     .then((movies) => res.send(movies))
     .catch(next);
 };
 
 module.exports.removeMovie = (req, res, next) => {
   Movie.findById(req.params._id)
-    .orFail(() => new NotFoundError('Фильм с указанным _id не найден.'))
+    .orFail(() => new NotFoundError())
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
-        throw (new ForbiddenError('Нет прав для удаления этого фильма.'));
+        throw (new ForbiddenError());
       }
       Movie.findByIdAndRemove(req.params._id)
         .then((removedMovie) => res.send(removedMovie))
@@ -54,7 +54,7 @@ module.exports.removeMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные при удалении фильма.'));
+        next(new BadRequestError());
         return;
       }
       next(err);
