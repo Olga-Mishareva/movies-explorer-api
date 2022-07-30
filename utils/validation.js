@@ -1,5 +1,12 @@
 const { celebrate, Joi } = require('celebrate');
-const { linkRegex, relativeLinkRegex } = require('./constants');
+const validator = require('validator');
+
+const urlValidation = Joi.string().required().custom((value, helpers) => {
+  if (validator.isURL(value)) {
+    return value;
+  }
+  return helpers.message('Поле заполненно не корректно.');
+});
 
 module.exports.registerValidation = celebrate({
   body: Joi.object().keys({
@@ -30,9 +37,9 @@ module.exports.movieDataValidation = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().pattern(relativeLinkRegex),
-    trailerLink: Joi.string().required().pattern(linkRegex),
-    thumbnail: Joi.string().required().pattern(relativeLinkRegex),
+    image: urlValidation,
+    trailerLink: urlValidation,
+    thumbnail: urlValidation,
     owner: Joi.string().length(24).hex(),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
@@ -42,6 +49,6 @@ module.exports.movieDataValidation = celebrate({
 
 module.exports.movieParamsValidation = celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().required().length(24).hex(),
+    id: Joi.string().required().length(24).hex(),
   }),
 });
