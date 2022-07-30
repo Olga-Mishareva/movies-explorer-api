@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const validator = require('validator');
 const UnauthorizedError = require('../errors/UnauthorizedError');
-const { emailRegex } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validator: (value) => emailRegex.test(value),
+      validator: (email) => validator.isEmail(email),
     },
   },
   password: {

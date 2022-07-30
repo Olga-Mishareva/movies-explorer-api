@@ -1,17 +1,17 @@
 const { celebrate, Joi } = require('celebrate');
-const { emailRegex, linkRegex, relativeLinkRegex } = require('./constants');
+const { linkRegex, relativeLinkRegex } = require('./constants');
 
 module.exports.registerValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    email: Joi.string().required().pattern(emailRegex),
+    email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
 });
 
 module.exports.loginValidation = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().pattern(emailRegex),
+    email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
 });
@@ -19,7 +19,7 @@ module.exports.loginValidation = celebrate({
 module.exports.updateUserValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    email: Joi.string().required().pattern(emailRegex),
+    email: Joi.string().required().email(),
   }),
 });
 
