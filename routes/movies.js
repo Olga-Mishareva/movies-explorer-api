@@ -4,6 +4,6 @@ const { movieDataValidation, movieParamsValidation } = require('../utils/validat
 
 router.get('/', getMovies);
 router.post('/', movieDataValidation, addMovie);
-router.delete('/:_id', movieParamsValidation, removeMovie);
+router.delete('/:id', movieParamsValidation, removeMovie);
 
 module.exports = router;

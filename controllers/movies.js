@@ -42,13 +42,13 @@ module.exports.getMovies = (req, res, next) => {
 };
 
 module.exports.removeMovie = (req, res, next) => {
-  Movie.findById(req.params._id)
+  Movie.findById(req.params.id)
     .orFail(() => new NotFoundError())
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
         throw (new ForbiddenError());
       }
-      Movie.findByIdAndRemove(req.params._id)
+      Movie.findByIdAndRemove(req.params.id)
         .then((removedMovie) => res.send(removedMovie))
         .catch(next);
     })
