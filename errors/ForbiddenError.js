@@ -1,7 +1,9 @@
+const { FORBIDDEN, forbidden } = require('../utils/constants');
+
 class ForbiddenError extends Error {
-  constructor(message = 'У пользователя нет прав для этого действия.') {
+  constructor(message = forbidden) {
     super(message);
-    this.statusCode = 403;
+    this.statusCode = FORBIDDEN;
     this.message = message;
   }
 }

@@ -1,11 +1,12 @@
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
+const { badRequest } = require('./constants');
 
 const urlValidation = Joi.string().required().custom((value, helpers) => {
-  if (validator.isURL(value)) {
-    return value;
+  if (!validator.isURL(value)) {
+    return helpers.message(badRequest);
   }
-  return helpers.message('Поле заполненно не корректно.');
+  return value;
 });
 
 module.exports.registerValidation = celebrate({
