@@ -1,7 +1,7 @@
 {
   "name": "movies-explorer-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API for register and authorize users in the movie search application.",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/Olga-Mishareva/movies-explorer-api.git"
   },
-  "author": "OM",
+  "author": "Oiga Mishareva",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Olga-Mishareva/movies-explorer-api/issues"
