@@ -12,16 +12,16 @@ const NotFoundError = require('../errors/NotFoundError');
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
 
-  User.findOne({ email })
-    .then((userWithSameEmail) => {
-      if (userWithSameEmail) throw new ConflictError();
-      return bcrypt.hash(password, Number(SALT_ROUND));
-    })
+  bcrypt.hash(password, Number(SALT_ROUND))
     .then((hash) => User.create({ name, email, password: hash }))
     .then((user) => {
       res.status(CREATED).send({ name: user.name, email: user.email, _id: user._id.toString() });
     })
     .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError());
+        return;
+      }
       if (err.name === 'ValidationError') {
         next(new BadRequestError());
         return;
