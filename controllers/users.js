@@ -78,6 +78,10 @@ module.exports.updateUser = (req, res, next) => {
     .orFail(() => new NotFoundError())
     .then((newUser) => res.send(newUser))
     .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError());
+        return;
+      }
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadRequestError());
         return;
