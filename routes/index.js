@@ -15,6 +15,6 @@ router.use('/movies', auth, moviesRoute);
 
 router.post('/signout', auth, logout);
 
-router.use(notFound);
+router.use(auth, notFound);
 
 module.exports = router;
