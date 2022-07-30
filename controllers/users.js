@@ -5,8 +5,6 @@ const { CREATED } = require('../utils/constants');
 const { DEV_KEY } = require('../utils/config');
 
 const { NODE_ENV, JWT_SECRET, SALT_ROUND } = process.env;
-const BadRequestError = require('../errors/BadRequestError');
-const ConflictError = require('../errors/ConflictError');
 const NotFoundError = require('../errors/NotFoundError');
 
 module.exports.createUser = (req, res, next) => {
@@ -17,17 +15,7 @@ module.exports.createUser = (req, res, next) => {
     .then((user) => {
       res.status(CREATED).send({ name: user.name, email: user.email, _id: user._id.toString() });
     })
-    .catch((err) => {
-      if (err.code === 11000) {
-        next(new ConflictError());
-        return;
-      }
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError());
-        return;
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.login = (req, res, next) => {
@@ -77,15 +65,5 @@ module.exports.updateUser = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .orFail(() => new NotFoundError())
     .then((newUser) => res.send(newUser))
-    .catch((err) => {
-      if (err.code === 11000) {
-        next(new ConflictError());
-        return;
-      }
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError());
-        return;
-      }
-      next(err);
-    });
+    .catch(next);
 };

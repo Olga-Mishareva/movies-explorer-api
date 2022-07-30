@@ -1,6 +1,5 @@
 const Movie = require('../models/movie');
 
-const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 
@@ -25,13 +24,7 @@ module.exports.addMovie = (req, res, next) => {
     owner: req.user._id,
   })
     .then((movie) => res.send(movie))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError());
-        return;
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.getMovies = (req, res, next) => {
@@ -52,11 +45,5 @@ module.exports.removeMovie = (req, res, next) => {
         .then((removedMovie) => res.send(removedMovie))
         .catch(next);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequestError());
-        return;
-      }
-      next(err);
-    });
+    .catch(next);
 };
