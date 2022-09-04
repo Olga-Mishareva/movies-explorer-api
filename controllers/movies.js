@@ -29,7 +29,7 @@ module.exports.addMovie = (req, res, next) => {
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
-    .orFail(() => new NotFoundError())
+    .orFail(() => res.send([]))
     .then((movies) => res.send(movies))
     .catch(next);
 };
