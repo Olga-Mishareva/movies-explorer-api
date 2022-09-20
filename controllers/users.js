@@ -47,7 +47,7 @@ module.exports.logout = (req, res, next) => {
   User.findOne({ email })
     .then(() => {
       res.clearCookie('jwt', { httpOnly: true, sameSite: true })
-        .send({ message: 'Пользователь разлогинен.' });
+        .send({ message: 'User is logged out' });
     })
     .catch(next);
 };
