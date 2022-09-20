@@ -23,6 +23,4 @@ To run the server on localhost:3000 with hotreload
 
 ------------
 
-Public IP: 51.250.84.124
-
 [Show API](https://api.movies.om.nomoredomains.xyz)
