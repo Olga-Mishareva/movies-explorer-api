@@ -29,8 +29,12 @@ module.exports.addMovie = (req, res, next) => {
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
-    .orFail(() => res.send([]))
-    .then((movies) => res.send(movies))
+    .then((movies) => {
+      if (!req.user._id) {
+        res.send([]);
+      }
+      else res.send(movies);
+    })
     .catch(next);
 };
 
