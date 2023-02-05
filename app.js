@@ -31,6 +31,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({
   origin: allowedCors,
+  methods: ['GET', 'PUT','PATCH', 'POST', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
 
